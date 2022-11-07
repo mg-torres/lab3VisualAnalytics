@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/movies.json"},
+  "transform": [
+    {"filter": {"timeUnit": "year", "field": "Release Date", "lte": "2005"}},
+    {"filter": {"timeUnit": "year", "field": "Release Date", "gte": "1995"}},
+    {"filter": {"field": "Worldwide Gross", "gt": "0"}}
+  ],
+  "vconcat": [
+    {
+      "width": 600,
+      "height": 400,
+      "layer": [
+        {
+          "mark": "point",
+          "encoding": {
+            "x": {
+              "field": "Production Budget",
+              "type": "quantitative",
+              "scale": {"type": "log"}
+            },
+            "y": {
+              "field": "Worldwide Gross",
+              "type": "quantitative",
+              "scale": {"type": "log"}
+            },
+            "color": {
+              "condition": {
+                "param": "filtro",
+                "field": "Creative Type",
+                "type": "nominal"
+              },
+              "value": "grey"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 600,
+      "height": 200,
+      "mark": "bar",
+      "params": [
+        {"name": "filtro", "select": {"type": "point", "encodings": ["x"]}}
+      ],
+      "encoding": {
+        "x": {"field": "Major Genre", "axis": {"labelAngle": -40}},
+        "y": {"aggregate": "count"},
+        "color": {
+          "condition": {"param": "filtro", "value": "steelblue"},
+          "value": "grey"
+        }
+      }
+    }
+  ],
+  "resolve": {"legend": {"color": "independent", "size": "independent"}},
+  "config": {}
+}
