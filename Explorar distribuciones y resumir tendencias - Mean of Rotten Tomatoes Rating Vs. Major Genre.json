@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 500,
+  "height": 400,
+  "data": {"url": "data/movies.json"},
+  "layer": [
+    {
+      "params": [
+        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
+      ],
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Creative Type", "type": "ordinal"},
+        "y": {
+          "aggregate": "mean",
+          "field": "Rotten Tomatoes Rating",
+          "type": "quantitative"
+        },
+        "opacity": {"condition": {"param": "brush", "value": 1}, "value": 0.4},
+        "color": {"field": "Creative Type", "type": "nominal"}
+      }
+    },
+    {
+      "transform": [{"filter": {"param": "brush"}}],
+      "mark": "rule",
+      "encoding": {
+        "y": {
+          "aggregate": "mean",
+          "field": "Rotten Tomatoes Rating",
+          "type": "quantitative"
+        },
+        "color": {"value": "#000000"},
+        "size": {"value": 3}
+      }
+    }
+  ],
+  "config": {}
+}
