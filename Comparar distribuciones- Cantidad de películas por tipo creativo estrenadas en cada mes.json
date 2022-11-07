@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1000,
+  "height": 800,
+  "description": "Bubble plot: Comparar tendencias: Profit (Dinero recaudado – presupuesto) para los diferentes tipos creativos a lo largo de los meses.",
+  "data": {"url": "data/movies.json"},
+  "transform": [
+    {"field": "Release Date", "timeUnit": "month", "as": "Month"},
+    {
+      "calculate": "datum['Worldwide Gross'] - datum['Production Budget']",
+      "as": "Profit"
+    },
+    {
+      "aggregate": [{"op": "count", "field": "Creative Type", "as": "Count"}],
+      "groupby": ["Creative Type", "Month"]
+    }
+  ],
+  "mark": {
+    "type": "circle",
+    "opacity": 0.8,
+    "stroke": "black",
+    "strokeWidth": 1
+  },
+  "encoding": {
+    "x": {
+      "field": "Month",
+      "timeUnit": "month",
+      "type": "temporal",
+      "axis": {"grid": false}
+    },
+    "y": {"field": "Creative Type", "type": "nominal", "axis": {"title": ""}},
+    "size": {
+      "field": "Count",
+      "type": "quantitative",
+      "title": "Amount of movies",
+      "legend": {"clipHeight": 60},
+      "scale": {"rangeMax": 3000}
+    },
+    "color": {"field": "Creative Type", "type": "nominal", "legend": null}
+  },
+  "config": {"legend": {"orient": "top-right", "offset": -170}}
+}

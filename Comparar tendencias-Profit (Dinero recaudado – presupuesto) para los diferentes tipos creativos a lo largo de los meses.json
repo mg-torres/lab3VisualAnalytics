@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 80,
+  "description": "Google's stock price over time.",
+  "data": {"url": "data/movies.json"},
+  "transform": [
+    {"field": "Release Date", "timeUnit": "month", "as": "Month"},
+    {
+      "calculate": "datum['Worldwide Gross'] - datum['Production Budget']",
+      "as": "Profit"
+    },
+    {
+      "aggregate": [{"op": "median", "field": "Profit", "as": "Profit"}],
+      "groupby": ["Major Genre", "Month"]
+    }
+  ],
+  "mark": {"type": "area", "interpolate": "monotone"},
+  "encoding": {
+    "x": {"field": "Month", "timeUnit": "month", "type": "temporal"},
+    "color": {"field": "Major Genre", "type": "nominal"},
+    "row": {"field": "Major Genre"},
+    "y": {
+      "field": "Profit",
+      "type": "quantitative",
+      "axis": {
+        "orient": "right",
+        "domain": false,
+        "tickCount": 2,
+        "labelFlush": true,
+        "format": "$,s"
+      }
+    }
+  },
+  "resolve": {"scale": {"y": "independent"}},
+  "config": {}
+}

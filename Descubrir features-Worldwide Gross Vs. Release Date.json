@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/movies.json"},
+  "transform": [
+    {"filter": {"timeUnit": "year", "field": "Release Date", "lte": "2022"}}
+  ],
+  "vconcat": [
+    {
+      "width": 480,
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "Release Date",
+          "type": "temporal",
+          "scale": {"domain": {"param": "brush"}},
+          "axis": {"title": ""}
+        },
+        "y": {"field": "Worldwide Gross", "type": "quantitative"}
+      }
+    },
+    {
+      "width": 480,
+      "height": 60,
+      "mark": "bar",
+      "params": [
+        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
+      ],
+      "encoding": {
+        "x": {"field": "Release Date", "type": "temporal"},
+        "y": {
+          "field": "Worldwide Gross",
+          "type": "quantitative",
+          "axis": {"tickCount": 3, "grid": false}
+        }
+      }
+    }
+  ],
+  "config": {}
+}
